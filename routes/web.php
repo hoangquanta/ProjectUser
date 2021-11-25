@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ProjectUsersController; 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('create');
-});
+
+Route::get('/', [ProjectUsersController::class,'index'])->name('users.show');
+Route::delete('/{id}', [ProjectUsersController::class, 'deleteUser'])->name('users.delete');
+Route::get('/create', [ProjectUsersController::class, 'openCreateForm'])->name('users.create.open');
+Route::post('/create', [ProjectUsersController::class, 'submitCreateForm'])->name('users.create.submit');
+Route::get('/update/{id}', [ProjectUsersController::class, 'openUpdateForm'])->name('users.update.open');
+Route::post('/update/{id}', [ProjectUsersController::class, 'submitUpdateForm'])->name('users.update.submit');
+
