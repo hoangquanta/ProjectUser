@@ -13,6 +13,7 @@
         {{-- Form body --}}                
         <div class="card-body pb-3">
           <form action="{{route('users.update.submit', ['id' => $user->id])}}" role="form" method="POST">
+            @method('patch')
             @csrf
             <label>Fullname</label>
             <div class="mb-3">
@@ -40,7 +41,7 @@
 
             <label>Confirm Password</label>
             <div class="mb-3">
-              <input name="passwordConfirmation" type="password" class="form-control" placeholder="Password" value="{{old('passwordConfirm')}}">
+              <input name="passwordConfirmation" type="password" class="form-control" placeholder="Password" value="{{old('passwordConfirm') ?? $user->password}}">
             </div>    
             @if ($errors->has('passwordConfirmation'))
                 <div class="text-danger text-end mt-n3 ">{{$errors->first('passwordConfirmation')}}</div>

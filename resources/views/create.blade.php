@@ -49,7 +49,7 @@
               <button type="submit" class="btn bg-gradient-primary w-100 mt-4 mb-0">Create</button>
             </div>
           </form>
-        </div>                
+        </div>                        
       </div>
 @endsection
 
@@ -57,3 +57,4 @@
     <h4 class="text-white font-weight-bolder">Your journey starts here</h4>
     <p class="text-white">Just as it takes a company to sustain a product, it takes a community to sustain a protocol.</p>                          
 @endsection
+

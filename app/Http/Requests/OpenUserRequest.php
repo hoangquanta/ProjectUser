@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\ProjectUsers;
 
 class OpenUserRequest extends FormRequest
 {
@@ -16,7 +15,10 @@ class OpenUserRequest extends FormRequest
     {
         return true;
     }
-
+    protected function prepareForValidation() 
+    {
+        $this->merge(['id' => $this->route('id')]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,7 +27,7 @@ class OpenUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'exists:App\Models\ProjectUsers,id'
+            'id' => 'required|exists:project_users,id'
         ];
-    }
+    }   
 }

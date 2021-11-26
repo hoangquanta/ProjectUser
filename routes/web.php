@@ -21,5 +21,5 @@ Route::delete('/{id}', [ProjectUsersController::class, 'deleteUser'])->name('use
 Route::get('/create', [ProjectUsersController::class, 'openCreateForm'])->name('users.create.open');
 Route::post('/create', [ProjectUsersController::class, 'submitCreateForm'])->name('users.create.submit');
 Route::get('/update/{id}', [ProjectUsersController::class, 'openUpdateForm'])->name('users.update.open');
-Route::post('/update/{id}', [ProjectUsersController::class, 'submitUpdateForm'])->name('users.update.submit');
+Route::patch('/update/{id}', [ProjectUsersController::class, 'submitUpdateForm'])->name('users.update.submit');
 

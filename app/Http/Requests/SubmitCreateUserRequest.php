@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\ProjectUsers;
 
-class SubmitUserRequest extends FormRequest
+class SubmitCreateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class SubmitUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,13 +22,17 @@ class SubmitUserRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {        
-        return [
-            'id' => 'exists:project_users',
+    {
+        return [            
             'fullname' => 'bail|required|max:50',
-            'username' => 'bail|required|max:50|unique:App\Models\ProjectUsers,username',
-            'password' => 'bail|required|max:50|min:8',
+            'username' => [
+                'bail',
+                'required',
+                'unique:project_users,username'
+            ], 
+            'password' => 'bail|required|max:50|min:5',
             'passwordConfirmation' => 'bail|required|same:password'
+            //
         ];
     }
 }

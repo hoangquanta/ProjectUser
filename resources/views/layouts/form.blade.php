@@ -25,6 +25,11 @@
             {{-- Left column --}}
             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
               @yield('form-content')
+              @if ($errors->has('id'))             
+                <div class="alert ">
+                  <div id="warning" class="text-lg text-danger text-center">{{$errors->first('id')}}</div>
+                </div>          
+              @endif  
             </div>
 
             {{-- Right column --}}            

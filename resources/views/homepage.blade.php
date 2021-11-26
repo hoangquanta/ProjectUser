@@ -6,7 +6,6 @@
       <div class="col-12">
         <div class="card">
           <div class="table-responsive">
-
             <table class="table align-items-center mb-0">
 
               {{-- Table head --}}              
@@ -42,14 +41,37 @@
                     </td>                    
                     <td class="align-middle text-center">                                            
                       <a href="{{route('users.update.open', ['id' => $user->id])}}"><button class="btn bg-gradient-secondary btn_sm mb-0 me-3" type="submit">Edit</button></a>
-                      <form class="align-midle text-center d-inline-block ms-3" action="{{route('users.delete',['id'=>$user->id])}}" method="POST">
-                          @method('delete')
-                          @csrf
-                          <button class="btn bg-gradient-danger btn_sm align-midle mb-0" type="submit">Delete</button>
-                      </form>
-                  </td>
+                      <button class="btn bg-gradient-danger btn_sm align-midle mb-0" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal-{{$user->id}}">Delete</button>                      
+                    </td>
+                    
                   </tr>
-                                     
+                  
+                  <!-- Modal -->
+                  <div class="modal fade" id="deleteModal-{{$user->id}}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteModalLabel">Delete comfirmation</h5>
+                          <button type="button" class="align-center" data-bs-dismiss="modal" aria-label="Close">x</button>
+                        </div>
+
+                        <div class="modal-body">
+                          Are you sure you want to delete this user? (id:{{$user->id}})
+                        </div>
+
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                          {{-- Send to route --}}                          
+                          <form class="align-midle text-center d-inline-block ms-3 mb-0" action="{{route('users.delete',['id'=>$user->id])}}" method="POST">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                          </form>                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 @endforeach 
                 <tr>
                   <td></td>
@@ -65,8 +87,16 @@
             </table>
           </div>
         </div>
+        @if ($errors->has('id'))             
+          <div class="alert ">
+            <div id="warning" class="text-lg text-danger text-center">{{$errors->first('id')}}</div>
+          </div>          
+        @endif                
+        
       </div>
     </div>                  
   </div>
+  
+
 @endsection
 
