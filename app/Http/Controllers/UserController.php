@@ -3,25 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ProjectUsers;
+use App\Models\User;
 use App\Validations\Validation;
 use App\Http\Requests\SubmitUpdateUserRequest;
 use App\Http\Requests\SubmitCreateUserRequest;
 use App\Http\Requests\OpenUserRequest;
 
-class ProjectUsersController extends Controller
+
+class UserController extends Controller
 {
+
     
-    public function index(){        
+    public function index(){
         //Get users who is member
-        $users = ProjectUsers::where('is_admin', '=', '0')->get(); 
+        $users = User::where('is_admin', '0')->get(); 
         return view('homepage')->with('users', $users);
-    }
+    }        
+
 
     public function deleteUser(OpenUserRequest $request) {
         //Delete the selected user
-        ProjectUsers::find($request ->id)->delete();
-        return redirect()->route('users.show');
+        User::find($request ->id)->delete();
+        return redirect()->route('index');
     }
 
     public function openCreateForm(Request $request) {
@@ -30,7 +33,7 @@ class ProjectUsersController extends Controller
 
     public function submitCreateForm(SubmitCreateUserRequest $request){
         
-        $record = new ProjectUsers();
+        $record = new User();
         
         $record->full_name = $request->fullname;
         $record->username = $request->username;
@@ -40,23 +43,23 @@ class ProjectUsersController extends Controller
         $record->created_by = 'on process...';
         $record->save();
         
-        return redirect()->route('users.show');
+        return redirect()->route('index');
     }
 
     public function openUpdateForm(OpenUserRequest $request){
         //Load the selected user data into form
-        $user = ProjectUsers::find($request->id);
+        $user = User::find($request->id);
         return view('update')->with('user', $user);
     }
 
     public function submitUpdateForm(SubmitUpdateUserRequest $request){
         
-        $record = ProjectUsers::find($request->id);
+        $record = User::find($request->id);
         
         $record->full_name = $request->fullname;
         $record->username = $request->username;
-        $record->password = $request->password;         
+        $record->password = $request->password;
         $record->save();
-        return redirect()->route('users.show');
+        return redirect()->route('index');
     }
 }

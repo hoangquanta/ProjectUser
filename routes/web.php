@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ProjectUsersController; 
+use App\Http\Controllers\UserController; 
+use App\Http\Controllers\CustomAuthController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +16,21 @@ use App\Http\Controllers\ProjectUsersController;
 |
 */
 
+//Index
+Route::get('/', [UserController::class,'index'])->middleware('auth')->name('index');
 
-Route::get('/', [ProjectUsersController::class,'index'])->name('users.show');
-Route::delete('/{id}', [ProjectUsersController::class, 'deleteUser'])->name('users.delete');
-Route::get('/create', [ProjectUsersController::class, 'openCreateForm'])->name('users.create.open');
-Route::post('/create', [ProjectUsersController::class, 'submitCreateForm'])->name('users.create.submit');
-Route::get('/update/{id}', [ProjectUsersController::class, 'openUpdateForm'])->name('users.update.open');
-Route::patch('/update/{id}', [ProjectUsersController::class, 'submitUpdateForm'])->name('users.update.submit');
+//Authenticate
+Route::get('/login', [CustomAuthController::class, 'login'])->name('login');
+Route::post('/login', [CustomAuthController::class, 'submitLogin'])->name('login.submit');
+Route::post('/logout', [CustomAuthController::class, 'logout'])->name('logout');
+Route::get('/admin', [CustomAuthController::class, 'createAdmin'])->name('admin.create');
+
+//Delete
+Route::delete('/{id}', [UserController::class, 'deleteUser'])->name('users.delete');
+//Create
+Route::get('/create', [UserController::class, 'openCreateForm'])->name('users.create.open');
+Route::post('/create', [UserController::class, 'submitCreateForm'])->name('users.create.submit');
+//Update
+Route::get('/update/{id}', [UserController::class, 'openUpdateForm'])->name('users.update.open');
+Route::patch('/update/{id}', [UserController::class, 'submitUpdateForm'])->name('users.update.submit');
 

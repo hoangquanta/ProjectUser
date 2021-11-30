@@ -29,12 +29,12 @@ class SubmitUpdateUserRequest extends FormRequest
     public function rules()
     {        
         return [
-            'id' => 'bail|required|exists:project_users,id',
+            'id' => 'bail|required|exists:users,id',
             'fullname' => 'bail|required|max:50',
             'username' => [
                 'bail',
                 'required',
-                'unique:project_users,username,'.$this->route('id')
+                'unique:users,username,'.$this->route('id')
             ], 
             'password' => 'bail|required|max:50|min:5',
             'passwordConfirmation' => 'bail|required|same:password'

@@ -27,7 +27,7 @@ class OpenUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|exists:project_users,id'
+            'id' => 'required|exists:users,id'
         ];
     }   
 }

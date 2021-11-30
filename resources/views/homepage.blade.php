@@ -4,7 +4,9 @@
   <div class="container-fluid py-4">
     <div class="row my-4">
       <div class="col-12">
+        <h2 class="card-title">Manage Users</h2>
         <div class="card">
+          
           <div class="table-responsive">
             <table class="table align-items-center mb-0">
 
@@ -72,7 +74,7 @@
                       </div>
                     </div>
                   </div>
-                @endforeach 
+                @endforeach      
                 <tr>
                   <td></td>
                   <td></td>
@@ -82,7 +84,7 @@
                   <td class="align-middle text-center">                    
                     <a href="{{route('users.create.open')}}"><button class="btn bg-gradient-secondary btn_sm mb-0" type="submit">Add new</button></a>
                   </td>
-                </tr> 
+                </tr>            
               </tbody>
             </table>
           </div>
@@ -91,7 +93,8 @@
           <div class="alert ">
             <div id="warning" class="text-lg text-danger text-center">{{$errors->first('id')}}</div>
           </div>          
-        @endif                
+        @endif 
+        @if (session('message')) <div class="noti text-success text-center mt-5"> {{ session('message') }} </div> @endif               
         
       </div>
     </div>                  
