@@ -8,6 +8,8 @@ use App\Validations\Validation;
 use App\Http\Requests\SubmitUpdateUserRequest;
 use App\Http\Requests\SubmitCreateUserRequest;
 use App\Http\Requests\OpenUserRequest;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class UserController extends Controller
@@ -17,7 +19,7 @@ class UserController extends Controller
     public function index(){
         //Get users who is member
         $users = User::where('is_admin', '0')->get(); 
-        return view('homepage')->with('users', $users);
+        return view('homepage.index')->with('users', $users);
     }        
 
 
@@ -39,8 +41,7 @@ class UserController extends Controller
         $record->username = $request->username;
         $record->password = $request->password;        
         $record->is_admin = false;
-        //todo: 
-        $record->created_by = 'on process...';
+        $record->created_by = Auth::user()->username;
         $record->save();
         
         return redirect()->route('index');
@@ -61,5 +62,25 @@ class UserController extends Controller
         $record->password = $request->password;
         $record->save();
         return redirect()->route('index');
+    }
+
+    public function getUserById(Request $request){
+        $id = $request->id;
+        if($id == null){
+            return response()->json("The id is required", 404);
+        }
+        if (User::find($id) == null){
+            return response()->json("Not found", 404);
+        }
+        $user = User::find($id);
+        return response()->json($user, 200);
+    }
+
+    public function getAllUsers(){
+        $users = User::all();
+        
+        if ($users == null) return response()->json("Not found", 404);
+        
+        return response()->json($users, 200);
     }
 }

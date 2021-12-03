@@ -43,9 +43,9 @@ class CustomAuthController extends Controller
     public function createAdmin(){
 
         $admin = new User();
-        $admin->username = "admin";
+        $admin->username = "admin02";
         $admin->password = Hash::make("admin");
-        $admin->full_name = 'VinaTakeuchi';
+        $admin->full_name = 'VinaTakeuchi02';
         $admin->is_admin = 1;
         $admin->created_by = "";
         $admin->save();
