@@ -30,7 +30,7 @@
           <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Login</button>
         </div>
       </form>
-      {{-- <a href="{{route('admin.create')}}"><button class="btn bg-gradient-success btn_sm mb-0" type="submit">Create Admin</button></a> --}}
+      <a href="{{route('admin.create')}}"><button class="btn bg-gradient-success btn_sm mb-0" type="submit">Create Admin</button></a>
     </div>
   </div>
   @if (session('message')) <div class="text-danger text-center"> {{ session('message') }} </div> @endif

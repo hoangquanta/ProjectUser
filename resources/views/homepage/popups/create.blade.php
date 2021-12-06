@@ -12,7 +12,7 @@
               <p class="mb-0">Enter account information to register</p>
             </div>              
             <div class="card-body pb-3">
-              <form action="{{route('users.create.submit')}}" role="form" method="POST">
+              <form role="form">
                 @csrf
 
                 <label>Fullname</label>
@@ -47,9 +47,8 @@
                     <div class="text-danger text-end mt-n3 ">{{$errors->first('passwordConfirmation')}}</div>
                 @endif                 
                 
-                {{-- Todo: submit form --}}
                 <div class="text-center">
-                  <span class="btn bg-gradient-primary w-100 mt-4 mb-0" onclick="submitCreatePopup()">Create</span>
+                  <button class="btn bg-gradient-primary w-100 mt-4 mb-0" onclick="submitCreatePopup(event)">Create</button>
                 </div>
               </form>
             </div>                        

@@ -1,3 +1,11 @@
+/*
+|--------------------------------------------------------------------------
+| Index Functions
+|--------------------------------------------------------------------------
+|
+*/
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -10,40 +18,32 @@ function showCreatePopup(){
     myModal.show();   
 }
 //
-function submitCreatePopup(){
+function submitCreatePopup(event){
+    event.preventDefault();
     var data = readUserInput("#create-popup");
 
     sendPostRequest("http://127.0.0.1:8000/api/users/", data, () => {
         //Before
         showLoader();
-    }, () => {
+    }, (res) => {
         //Success
         hideLoader();
-        //Todo:
-            //Close popup
-        informSuccess();
+        $('#create-popup').modal('hide');
+        showMessage("Create new user successfully");
+        setTimeout(() => {
+            location.reload();
+        }, 1600);
     }, (ex) => {
         //Fail
         hideLoader();
         console.log(ex);
+        showMessage("Create new user fail");
     });
 }
 function readUserInput(popupId){
-    //Read inputs
-    var fullname = document.querySelector(popupId + " input[name=fullname").value;
-    var username = document.querySelector(popupId + " input[name=username]").value;
-    var password = document.querySelector(popupId + " input[name=password]").value;
-    var passwordConfirm = document.querySelector(popupId + " input[name=passwordConfirmation]").value;
-    
-    //Parse to JSON
-    var data = {
-        "fullname": fullname,
-        "username": username,
-        "password": password,
-        "passwordConfirm": passwordConfirm
-    };
-    var result = JSON.stringify(data);
-    return result;
+    var form = document.querySelector(popupId + " form");
+    var formData = new FormData(form);
+    return formData;
 }
 
 /*
@@ -53,45 +53,58 @@ function readUserInput(popupId){
 |
 */
 function showUpdatePopup(userId){
+    //Request user data from Axios request -> API route -> UserController->getUserById()
     sendGetRequest("http://127.0.0.1:8000/api/users/" + userId, ()=>{
         //Before executing
         showLoader(); 
 
-    }, (data) => {
+    }, (response) => {
         //Success              
         hideLoader();
-        showUserData(data);
-        
+        showUserData(response);
+
     }, (ex)=>{
         //Fail
         hideLoader();
         console.log(ex);
-    });
+    });    
 }
-function showUserData(data){
+function showUserData(response){
     //Access user data
-    var user = data['data'];
+    var user = response['data'];
     //Load data into form
     document.querySelector("#update-popup input[name=fullname").value = user.full_name;
     document.querySelector("#update-popup input[name=username]").value = user.username;
     document.querySelector("#update-popup input[name=password]").value = user.password;
     document.querySelector("#update-popup input[name=passwordConfirmation]").value = user.password;    
 
+    //Pass userId from mainpage into the update button
+    var userId = user.id;
+    var confirmBtn = document.querySelector("#update-popup button.confirm-btn");
+    confirmBtn.addEventListener('click', function (event) {
+        submitUpdatePopup(event, userId);
+    });
     //Show modal
     var modal = new bootstrap.Modal(document.getElementById('update-popup'));
     modal.show();
 }
 //
-function submitUpdatePopup(userId){
+function submitUpdatePopup(event, userId){
+    event.preventDefault();
     var data = readUserInput("#update-popup");
 
     sendPostRequest("http://127.0.0.1:8000/api/users/" + userId, data, () => {
         //Before executing
         showLoader();
 
-    }, () => {
+    }, (res) => {
         //Success
-        hideLoader();
+        hideLoader();        
+        $('#update-popup').modal('hide');
+        showMessage("Updating user succeed");
+        setTimeout(() => {
+            location.reload();
+        }, 1600);
 
         //Todo:
             //Close popup
@@ -100,6 +113,7 @@ function submitUpdatePopup(userId){
         //Fail
         hideLoader();
         console.log(ex);
+        showMessage("Updating user fail");
     });
 }
 
@@ -112,7 +126,9 @@ function submitUpdatePopup(userId){
 function showDeletePopup(userId){
     //Pass userId from mainpage into the delete button in delete popup
     var confirmBtn = document.querySelector("#delete-popup button.confirm-btn");
-    confirmBtn.addEventListener('click', submitDeletePopup(userId));
+    confirmBtn.addEventListener('click', function () {
+        submitDeletePopup(userId);
+    });
 
     //Show modal
     var modal = new bootstrap.Modal(document.getElementById('delete-popup'));
@@ -122,13 +138,18 @@ function showDeletePopup(userId){
 function submitDeletePopup(userId){
     sendDeleteRequest("http://127.0.0.1:8000/api/users/" + userId, () =>{
         showLoader();
-    }, ()=>{
-        hideLoader();
-        //todo:
-            //inform deleting successful
+    }, (res)=>{
+        hideLoader();        
+        $('#delete-popup').modal('hide');
+        showMessage("Deleting user succeed");
+        setTimeout(() => {
+            location.reload();
+        }, 1600);
+
     }, (ex)=>{
         hideLoader();
         console.log(ex);
+        showMessage("Deleting user fail");
     });
 }
 
@@ -158,14 +179,13 @@ async function sendPostRequest(url, data, onTaskBegin = null, onTaskCompleted = 
     //Before executing task
     onTaskBegin?.();
     try{
-        var data = await axios.post(url,data);
-
+        var res = await axios.post(url, data);
         //Execution successful
-        onTaskCompleted?.(data);
+        onTaskCompleted?.(res);
         
     } catch(ex){
         //Execution fail
-        onTaskFailed?.(ex);
+        onTaskFailed?.(ex.response.data);
     }  
 }
 
@@ -173,10 +193,11 @@ async function sendDeleteRequest(url, onTaskBegin = null, onTaskCompleted = null
     //Before executing task
     onTaskBegin?.();
     try{
-        var data = await axios.delete(url);
+        var response = await axios.delete(url);
 
         //Execution successful
-        onTaskCompleted?.(data);
+        onTaskCompleted?.(response);
+
         
     } catch(ex){
         //Execution fail
@@ -197,3 +218,9 @@ function showLoader(){
 function hideLoader(){    
     $('#loading').attr('style', 'display: none');
 }
+function showMessage(message) {
+    var x = document.getElementById("snackbar");
+    x.innerHTML = message;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
+  }

@@ -18,9 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('full_name');
-            $table->string('is_admin');
-            $table->string('created_by');
-
+            $table->boolean('is_admin');
+            $table->foreignId('created_by')->nullable();
+        });
+        Schema::table('users', function ($table){
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

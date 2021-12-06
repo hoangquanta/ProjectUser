@@ -29,6 +29,7 @@ class CustomAuthController extends Controller
                 return redirect()->intended()->with('message', 'Signed in successful');
             }
         }
+        //$tokenResult = $user->createToken('authToken')->plainTextToken;
         
         return redirect()->route('login')->with('message','This account is unauthorized');
     }
@@ -47,7 +48,7 @@ class CustomAuthController extends Controller
         $admin->password = Hash::make("admin");
         $admin->full_name = 'VinaTakeuchi02';
         $admin->is_admin = 1;
-        $admin->created_by = "";
+        $admin->created_by = null;
         $admin->save();
         return redirect()->route('login');
     }

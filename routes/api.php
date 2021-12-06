@@ -18,7 +18,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::prefix("users")->group(function(){
-    Route::get('', [UserController::class,'getAllUsers']);
-    Route::get('{id}', [UserController::class,'getUserById']);
+    Route::get('', [UserController::class,'getAllUsers']);//done, not implement
+    Route::post('', [UserController::class,'createUser']);//....hold....
+    Route::get('{id}', [UserController::class,'getUserById']);//done
+    Route::post('{id}', [UserController::class,'updateUser']);
+    Route::delete('{id}', [UserController::class,'deleteUser']);//doing
 });
 

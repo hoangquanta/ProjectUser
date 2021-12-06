@@ -50,7 +50,7 @@
         <div class="modal-footer">
             {{-- Todo: cancel and submit form --}}
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>               
-          <button type="button" class="btn btn-primary" onclick="submitUpdatePopup()">Update</button>                       
+          <button type="button" class="btn btn-primary confirm-btn">Update</button>                       
         </div>
       </div>
     </div>

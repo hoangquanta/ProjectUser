@@ -45,6 +45,14 @@
               </div>
           </div>
   </div>
+
+  @if ($errors->has('id'))             
+    <div class="alert ">
+      <div id="warning" class="text-lg text-danger text-center">{{$errors->first('id')}}</div>
+    </div>          
+  @endif 
+  @if (session('message')) <div class="noti text-success text-center mt-5"> {{ session('message') }} </div> @endif  
+  <div id="snackbar"></div>
 @endsection
 <script src="{{asset('assets/js/homepage.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
